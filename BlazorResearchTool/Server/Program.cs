@@ -1,4 +1,8 @@
+using BlazorResearchTool.Server.Data;
+using BlazorResearchTool.Server.Interfaces;
+using BlazorResearchTool.Server.Repositories;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<ResearchToolDbContext>(options => 
+    options.UseSqlServer((builder.Configuration.GetConnectionString("DefaultConnection"))));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 
 var app = builder.Build();
 
